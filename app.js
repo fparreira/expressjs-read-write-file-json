@@ -1,9 +1,13 @@
 const express = require('express');
 const path = require('path');
+const bodyparser = require('body-parser');
+
 
 const app = express();
 const router = express.Router();
 
+app.use(bodyparser.urlencoded({ extended:false }));
+app.use(bodyparser.json());
 
 router.get('/readfile', (req, res) => {
     res.send('read file');
@@ -23,7 +27,7 @@ router.get('/writefile', (req, res) => {
 
 router.post('/writefile', (req, res) => {
     res.send('write inside file');
-    console.log(req.body.user.toString());
+    console.log(req.body.user);
 });
 
 app.use(router);
