@@ -40,21 +40,17 @@ router.post('/writefile', (req, res) => {
     res.send(users);
 
     // exists file users.json ?
-    fs.access(path.join(require.main.path, fileJson),(err) => {
+    const access = fs.access(path.join(require.main.path, fileJson), (err) => {
         if(err){
             console.log('file doesnt exist');
             console.log(err);
-        }
-        else{
-            console.log('the file exists');
-        }      
-        
+            // create file
+            
+        }       
     });
-        // no
-        // create json file
-    // 
-        // yes
-        // write in json 
+
+    // write in file
+    
 
 
     // console.log(req.body.user);
