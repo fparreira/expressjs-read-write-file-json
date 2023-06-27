@@ -39,15 +39,33 @@ router.post('/writefile', (req, res) => {
     users.push({'user' : req.body.user});
     res.send(users);
 
-    // exists file users.json ?
-    const access = fs.access(path.join(require.main.path, fileJson), (err) => {
+    let p = path.join(require.main.path, 'users.json');
+
+    fs.readFile(p, (err, content) => {
+        // file not exists
         if(err){
-            console.log('file doesnt exist');
             console.log(err);
-            // create file
+            // create and write in file
+            // fs.wri
             
-        }       
+        }
+        else{
+            console.log(content);
+        }
     });
+
+
+
+
+    // exists file users.json ?
+    // const access = fs.access(path.join(require.main.path, fileJson), (err) => {
+    //     if(err){
+    //         console.log('file doesnt exist');
+    //         console.log(err);
+    //         // create file
+            
+    //     }       
+    // });
 
     // write in file
     
