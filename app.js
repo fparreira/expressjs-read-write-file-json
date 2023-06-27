@@ -10,7 +10,8 @@ const router = express.Router();
 
 // consts
 const users = [];
-const fileJson = 'users.json';
+// const fileJson = 'users.json';
+const p = path.join(require.main.path, 'users.json');
 
 // parser requests
 app.use(bodyparser.urlencoded({ extended:false }));
@@ -18,61 +19,45 @@ app.use(bodyparser.json());
 
 // route
 router.get('/readfile', (req, res) => {
-    res.send('read file');
+    fs.readFile(p, 'utf8', (err, content) => {
+        // file not exists
+        if(err){
+            res.send('error on read file');
+            console.log(err);            
+        }
+        else{
+            res.send(content);
+            console.log(content);
+        }
+    });
 });
 
 // route
 router.get('/writefile', (req, res) => {
     res.sendFile(path.join(require.main.path, 'formwritefile.html'), (err) => {
         if(err){
+            res.send('error on app user');
             console.log(err);
         }
-        // else{
-        //     console.log("sent formwritefile.html");
-        // }
-    });
-    // console.log(require.main.path);
+    });    
 });
 
 // route
 router.post('/writefile', (req, res) => {
-    users.push({'user' : req.body.user});
-    res.send(users);
+    users.push({'user' : req.body.user});    
 
-    let p = path.join(require.main.path, 'users.json');
-
-    fs.readFile(p, (err, content) => {
-        // file not exists
-        if(err){
+    fs.writeFile(p, JSON.stringify(users), {'flag' : 'a+'}, (err) => {
+        if (err) {
+            res.send(err);
             console.log(err);
-            // create and write in file
-            // fs.wri
-            
         }
         else{
-            console.log(content);
+            res.redirect('/readfile');
+            console.log('user written on file');
         }
-    });
+    })
 
 
-
-
-    // exists file users.json ?
-    // const access = fs.access(path.join(require.main.path, fileJson), (err) => {
-    //     if(err){
-    //         console.log('file doesnt exist');
-    //         console.log(err);
-    //         // create file
-            
-    //     }       
-    // });
-
-    // write in file
-    
-
-
-    // console.log(req.body.user);
-    // console.log(req.body);
 });
 
 // active routes
